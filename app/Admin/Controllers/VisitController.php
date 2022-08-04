@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Metrics\DailyButton;
 use App\Admin\Metrics\DailyHome;
+use App\Admin\Metrics\TotalButton;
+use App\Admin\Metrics\TotalHome;
 use App\Admin\Metrics\WeekButton;
 use App\Admin\Metrics\WeekHome;
 use App\Admin\Repositories\Visit;
@@ -22,10 +24,12 @@ class VisitController extends AdminController
             ->header('访问记录')
             ->description('列表')
             ->body(function (Row $row) {
-                $row->column(3, new DailyHome());
-                $row->column(3, new DailyButton());
-                $row->column(3, new WeekHome());
-                $row->column(3, new WeekButton());
+                $row->column(2, new TotalHome());
+                $row->column(2, new TotalButton());
+                $row->column(2, new DailyHome());
+                $row->column(2, new DailyButton());
+                $row->column(2, new WeekHome());
+                $row->column(2, new WeekButton());
             })
             ->body($this->grid());
     }

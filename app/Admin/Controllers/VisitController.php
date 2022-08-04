@@ -2,19 +2,34 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Metrics\DailyButton;
+use App\Admin\Metrics\DailyHome;
+use App\Admin\Metrics\WeekButton;
+use App\Admin\Metrics\WeekHome;
 use App\Admin\Repositories\Visit;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
+use Dcat\Admin\Layout\Content;
+use Dcat\Admin\Layout\Row;
 use Dcat\Admin\Show;
 use Dcat\Admin\Http\Controllers\AdminController;
 
 class VisitController extends AdminController
 {
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
+    public function index(Content $content)
+    {
+        return $content
+            ->header('访问记录')
+            ->description('列表')
+            ->body(function (Row $row) {
+                $row->column(3, new DailyHome());
+                $row->column(3, new DailyButton());
+                $row->column(3, new WeekHome());
+                $row->column(3, new WeekButton());
+            })
+            ->body($this->grid());
+    }
+
     protected function grid()
     {
         return Grid::make(new Visit(), function (Grid $grid) {
@@ -44,6 +59,7 @@ class VisitController extends AdminController
             $grid->model()->orderBy('id', 'desc');
             $grid->disableCreateButton();
             $grid->disableActions();
+            $grid->export();
         });
     }
 
